@@ -1,5 +1,5 @@
 import firebase from 'firebase'
-import { FB_API_KEY } from '../../env.config';
+import { FB_API_KEY } from '../env.config';
 
 const firebaseConfig = {
   apiKey: FB_API_KEY,
