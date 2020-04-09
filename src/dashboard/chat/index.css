@@ -1,0 +1,4 @@
+.chat {
+  grid-area: chat;
+  background: blue;
+}

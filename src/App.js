@@ -30,7 +30,7 @@ function App() {
     checkAuth()
   })
   return (
-    <Router className="App">
+    <Router className="app">
       <Dashboard path='/' />
       <SignIn path='/signin' />
     </Router>
