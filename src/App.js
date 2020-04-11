@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Router, navigate } from '@reach/router'
 import firebase from 'firebase'
 
@@ -8,15 +8,18 @@ import Dashboard from './dashboard'
 
 // Modules
 import { app } from './db/firebase'
-import { currentUser } from './authentication/authService'
+import { authState } from './authentication/authService'
 
 import './App.css';
 
 function App() {
 
+  const [ currentUser, setCurrentUser ] = useState()
+
   useEffect(() => {
+    firebase.auth().onAuthStateChanged(user => setCurrentUser(user))
     const checkAuth = async () => {
-      if(currentUser()) {
+      if(currentUser) {
         navigate('/dashboard')
       } else if(firebase.auth(app).isSignInWithEmailLink(window.location.href)) {
         const email = localStorage.getItem('userEmail')
@@ -30,12 +33,11 @@ function App() {
     checkAuth()
   })
 
-  console.log(currentUser())
 
   return (
     <Router className="app">
       <SignIn path='/' />
-      {currentUser && <Dashboard path='/dashboard' />}
+      <Dashboard path='/dashboard' />
     </Router>
   );
 }

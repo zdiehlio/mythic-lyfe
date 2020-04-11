@@ -9,10 +9,7 @@ const signInWithLink = async (email, options) => {
 
 const signOut = () => firebase.auth(app).signOut().then(user => user).catch(err => err)
 
-const currentUser = firebase.auth().onAuthStateChanged(user => user)
-
 export {
   signInWithLink,
-  currentUser,
   signOut
 }
