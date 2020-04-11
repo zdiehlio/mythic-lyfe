@@ -16,23 +16,26 @@ function App() {
 
   useEffect(() => {
     const checkAuth = async () => {
-      if(currentUser) {
-        navigate('/')
+      if(currentUser()) {
+        navigate('/dashboard')
       } else if(firebase.auth(app).isSignInWithEmailLink(window.location.href)) {
         const email = localStorage.getItem('userEmail')
         if(!email) email = window.prompt('Please provide you email for verification')
         await firebase.auth().signInWithEmailLink(email, window.location.href)
-        navigate('/')
+        navigate('/dashboard')
       } else {
-        navigate('/signin')
+        navigate('/')
       }
     }
     checkAuth()
   })
+
+  console.log(currentUser())
+
   return (
     <Router className="app">
-      <Dashboard path='/' />
-      <SignIn path='/signin' />
+      <SignIn path='/' />
+      {currentUser && <Dashboard path='/dashboard' />}
     </Router>
   );
 }

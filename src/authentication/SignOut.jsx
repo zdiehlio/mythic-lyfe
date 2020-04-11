@@ -1,12 +1,18 @@
 import React from 'react'
+import { navigate } from '@reach/router'
 
 import { signOut } from './authService'
 
 const SignOut = () => {
 
+  const handleSignOut = async () => {
+    await signOut()
+    navigate('/')
+  }
+
   return(
     <div>
-      <button onClick={signOut}>Sign Out</button>
+      <button onClick={handleSignOut}>Sign Out</button>
     </div>
   )
 }
