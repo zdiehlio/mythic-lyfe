@@ -1,0 +1,61 @@
+import React, { useState, useEffect } from 'react'
+
+import { addTeam, getTeams } from '../db/firebase'
+
+const Teams = ({ currentUser }) => {
+
+  const [ teamsState, setTeamsState ] = useState([])
+  const [ newTeamNameState, setNewTeamNameState ] = useState('')
+  const [ newTeamMemberState, setNewTeamMemberState ] = useState('')
+  const [ allTeamMembersState, setAllTeamMembersState ] = useState([])
+
+  useEffect(() => {
+    const fetchTeams = async () => {
+      const teams = await getTeams(currentUser.email)
+      setTeamsState(teams)
+    }
+    fetchTeams()
+  }, [])
+
+  const handleNewTeamMember = event => {
+    event.preventDefault()
+    const teamMembers = allTeamMembersState.concat(newTeamMemberState)
+    setAllTeamMembersState(teamMembers)
+  }
+
+  const handleSubmit = event => {
+    event.preventDefault()
+    const newTeam = { name: newTeamNameState, members: allTeamMembersState.concat(currentUser.email) }
+    addTeam(newTeam)
+  }
+
+  return (
+    <div>
+      <ul>
+        {teamsState.length ?
+          teamsState.map(team => {
+            return (
+              <li key={team.name}>
+                {team.name}
+              </li>
+            )
+          }) :
+          <p>No Teams</p>
+        }
+      </ul>
+      <form onSubmit={handleSubmit}>
+      <input placeholder='Team Name' onChange={event => setNewTeamNameState(event.target.value)}></input>
+      <input placeholder='Add Member' onChange={event => setNewTeamMemberState(event.target.value)}></input>
+      <button onClick={handleNewTeamMember}>Add Member</button>
+      {allTeamMembersState.length && 
+        <ul>
+          {allTeamMembersState.map(member => <li key={member}>{member}</li>)}
+        </ul>
+      }
+      <button type='submit'>Add Team</button>
+      </form>
+    </div>
+  )
+}
+
+export default Teams

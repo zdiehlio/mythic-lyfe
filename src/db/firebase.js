@@ -13,3 +13,20 @@ const firebaseConfig = {
 
 // Initialize Firebase
 export const app = firebase.initializeApp(firebaseConfig)
+
+const db = firebase.firestore()
+
+export const addTeam = async team => {
+  const newTeam = await db.collection('teams').doc(team.name).set({
+    name: team.name,
+    members: team.members
+  })
+  return newTeam
+}
+
+export const getTeams = async user => {
+  const teams = []
+  const teamQuery = await db.collection('teams').where('members', 'array-contains', `${user}`).get()
+  if(teamQuery) teamQuery.forEach(team => teams.push(team.data()))
+  return teams
+}

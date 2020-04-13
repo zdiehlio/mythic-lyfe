@@ -25,7 +25,7 @@ function App() {
       }
     }
     checkAuth()
-  })
+  }, [])
 
 
   return (
