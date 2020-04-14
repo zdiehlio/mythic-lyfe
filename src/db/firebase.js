@@ -30,3 +30,8 @@ export const getTeams = async user => {
   if(teamQuery) teamQuery.forEach(team => teams.push(team.data()))
   return teams
 }
+
+export const getTeam = async team => {
+  const teamResult = await db.collection('teams').doc(team).get()
+  return teamResult.data()
+}

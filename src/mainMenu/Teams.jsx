@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { Link } from '@reach/router'
 
 import { addTeam, getTeams } from '../db/firebase'
 
@@ -35,8 +36,10 @@ const Teams = ({ currentUser }) => {
         {teamsState.length ?
           teamsState.map(team => {
             return (
-              <li key={team.name}>
-                {team.name}
+              <li>
+                <Link to={`/dashboard/${team.name}`} key={team.name}>
+                  {team.name}
+                </Link>
               </li>
             )
           }) :

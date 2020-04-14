@@ -31,7 +31,7 @@ function App() {
   return (
     <Router className="app">
       <MainMenu currentUser={currentUser} path='/' />
-      <Dashboard currentUser={currentUser} path='/dashboard' />
+      <Dashboard currentUser={currentUser} path='/dashboard/:team' />
     </Router>
   );
 }
