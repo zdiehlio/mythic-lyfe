@@ -5,28 +5,37 @@ import Console from './console';
 import Interface from './interface';
 import Chat from './chat';
 
-import { getTeam } from '../db/firebase'
+import { getTeam, getAllQuests } from '../db/firebase'
 
 import './index.css'
 
 const Dashboard = () => {
 
-  const [ currentTeam, setCurrentTeam ] = useState({ name: '', members: [] })
+  const [ currentTeamState, setCurrentTeamState ] = useState({ name: '', members: [] })
+  const [ questListState, setQuestListState] = useState([])
   const params = useParams()
 
   useEffect(() => {
     const teamResults = async () => {
       const team = await getTeam(params.team)
-      console.log('team', team)
-      setCurrentTeam(team)
+      setCurrentTeamState(team)
+    }
+    const questResults = async () => {
+      const quests = await getAllQuests(params.team)
+      setQuestListState(quests)
     }
     teamResults()
+    questResults()
   }, [])
+
+  const updateQuestList = quest => {
+    setQuestListState(questListState.concat(quest))
+  }
 
   return(
     <div className='dashboard'>
-      <Console currentTeam={currentTeam} />
-      <Interface />
+      <Console currentTeam={currentTeamState} />
+      <Interface currentTeam={currentTeamState} questList={questListState} updateQuestList={updateQuestList} />
       <Chat />
     </div>
   )

@@ -32,6 +32,7 @@ function App() {
     <Router className="app">
       <MainMenu currentUser={currentUser} path='/' />
       <Dashboard currentUser={currentUser} path='/dashboard/:team' />
+      <Dashboard currentUser={currentUser} path='/dashboard/:team/:quest' />
     </Router>
   );
 }

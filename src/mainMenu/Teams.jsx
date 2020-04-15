@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Link } from '@reach/router'
 
-import { addTeam, getTeams } from '../db/firebase'
+import { addTeam, getAllTeams } from '../db/firebase'
 
 const Teams = ({ currentUser }) => {
 
@@ -12,7 +12,7 @@ const Teams = ({ currentUser }) => {
 
   useEffect(() => {
     const fetchTeams = async () => {
-      const teams = await getTeams(currentUser.email)
+      const teams = await getAllTeams(currentUser.email)
       setTeamsState(teams)
     }
     fetchTeams()
