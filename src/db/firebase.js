@@ -37,7 +37,7 @@ export const getTeam = async team => {
 }
 
 export const addQuest = async (quest, team) => {
-  const newQuest = await db.collection('quests').collection(team).add({
+  const newQuest = await db.collection('teams').doc(team).collection('quests').add({
     name: quest.name,
     description: quest.description,
     experience: quest.experience,
@@ -48,12 +48,12 @@ export const addQuest = async (quest, team) => {
 
 export const getAllQuests = async team => {
   const quests = []
-  const questQuery = await db.collection('quests').collection(team).get()
+  const questQuery = await db.collection('teams').doc(team).collection('quests').get()
   if(questQuery) questQuery.forEach(quest => quests.push(quest.data()))
   return quests
 }
 
 export const getQuest = async (quest, team) => {
-  const questResult = await db.collection('quests').collection(team).doc(quest).get()
+  const questResult = await db.collection('teams').doc(team).collection('quests').doc(quest).get()
   return questResult.data()
 }

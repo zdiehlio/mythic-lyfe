@@ -19,7 +19,7 @@ function App() {
     firebase.auth().onAuthStateChanged(user => setCurrentUser(user))
     const checkAuth = async () => {
       if(firebase.auth(app).isSignInWithEmailLink(window.location.href)) {
-        const email = localStorage.getItem('userEmail')
+        let email = localStorage.getItem('userEmail')
         if(!email) email = window.prompt('Please provide you email for verification')
         await firebase.auth().signInWithEmailLink(email, window.location.href)
       }
@@ -31,8 +31,7 @@ function App() {
   return (
     <Router className="app">
       <MainMenu currentUser={currentUser} path='/' />
-      <Dashboard currentUser={currentUser} path='/dashboard/:team' />
-      <Dashboard currentUser={currentUser} path='/dashboard/:team/:quest' />
+      <Dashboard currentUser={currentUser} path='/dashboard/:team/*' />
     </Router>
   );
 }

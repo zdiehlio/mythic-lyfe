@@ -16,7 +16,7 @@ const Teams = ({ currentUser }) => {
       setTeamsState(teams)
     }
     fetchTeams()
-  }, [])
+  }, [currentUser.email])
 
   const handleNewTeamMember = event => {
     event.preventDefault()
