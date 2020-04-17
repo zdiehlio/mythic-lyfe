@@ -9,7 +9,7 @@ const Console = ({ currentTeam }) => {
     <div className='console'>
       Console
       {currentTeam.name}
-      {currentTeam.members.map(member => <div>{member}</div>)}
+      {currentTeam.user.id}
       <SignOut />
     </div>
   )

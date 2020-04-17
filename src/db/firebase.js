@@ -17,23 +17,25 @@ export const app = firebase.initializeApp(firebaseConfig)
 const db = firebase.firestore()
 
 export const addTeam = async team => {
-  const newTeam = await db.collection('teams').doc(team.name).set({
+  const teamRef = db.collection('teams').doc(team.name)
+  const newTeam = await teamRef.set({
     name: team.name,
-    members: team.members
   })
-  return newTeam
+  await team.members.forEach(member => teamRef.collection('members').doc(member).set({id: member}))
+  return newTeam ? newTeam : undefined
 }
 
 export const getAllTeams = async user => {
   const teams = []
-  const teamQuery = await db.collection('teams').where('members', 'array-contains', `${user}`).get()
+  const teamQuery = await db.collectionGroup('members').where('id', '==', `${user}`).get()
   if(teamQuery) teamQuery.forEach(team => teams.push(team.data()))
   return teams
 }
 
-export const getTeam = async team => {
+export const getTeam = async (team, user) => {
   const teamResult = await db.collection('teams').doc(team).get()
-  return teamResult.data()
+  const userResult = await db.collection('teams').doc(team).collection('members').doc(user).get()
+  return { ...teamResult.data(), user: userResult.data() }
 }
 
 export const addQuest = async (quest, team) => {

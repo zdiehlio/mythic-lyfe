@@ -27,7 +27,8 @@ const Teams = ({ currentUser }) => {
   const handleSubmit = event => {
     event.preventDefault()
     const newTeam = { name: newTeamNameState, members: allTeamMembersState.concat(currentUser.email) }
-    addTeam(newTeam)
+    const teamAdded = addTeam(newTeam)
+    teamAdded && setTeamsState(teamsState.concat(newTeam))
   }
 
   return (

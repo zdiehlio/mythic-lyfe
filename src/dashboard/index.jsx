@@ -9,16 +9,19 @@ import { getTeam, getAllQuests } from '../db/firebase'
 
 import './index.css'
 
-const Dashboard = () => {
+const Dashboard = ({ currentUser }) => {
 
-  const [ currentTeamState, setCurrentTeamState ] = useState({ name: '', members: [] })
+  const [ currentTeamState, setCurrentTeamState ] = useState({ name: '', user: {} })
   const [ questListState, setQuestListState] = useState([])
   const params = useParams()
 
   useEffect(() => {
     const teamResults = async () => {
-      const team = await getTeam(params.team)
-      setCurrentTeamState(team)
+      if(currentUser) {
+        const team = await getTeam(params.team, currentUser.email)
+        setCurrentTeamState(team)
+
+      }
     }
     const questResults = async () => {
       const quests = await getAllQuests(params.team)
@@ -26,7 +29,7 @@ const Dashboard = () => {
     }
     teamResults()
     questResults()
-  }, [])
+  }, [currentUser])
 
   const updateQuestList = quest => {
     setQuestListState(questListState.concat(quest))
