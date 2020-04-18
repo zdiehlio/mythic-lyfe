@@ -16,8 +16,10 @@ export const app = firebase.initializeApp(firebaseConfig)
 
 const db = firebase.firestore()
 
+const teamsRef = db.collection('teams')
+
 export const addTeam = async team => {
-  const teamRef = db.collection('teams').doc(team.name)
+  const teamRef = teamsRef.doc(team.name)
   const newTeam = await teamRef.set({
     name: team.name,
   })
@@ -33,13 +35,13 @@ export const getAllTeams = async user => {
 }
 
 export const getTeam = async (team, user) => {
-  const teamResult = await db.collection('teams').doc(team).get()
-  const userResult = await db.collection('teams').doc(team).collection('members').doc(user).get()
+  const teamResult = await teamsRef.doc(team).get()
+  const userResult = await teamsRef.doc(team).collection('members').doc(user).get()
   return { ...teamResult.data(), user: userResult.data() }
 }
 
 export const addQuest = async (quest, team) => {
-  const newQuest = await db.collection('teams').doc(team).collection('quests').add({
+  const newQuest = await teamsRef.doc(team).collection('quests').add({
     name: quest.name,
     description: quest.description,
     experience: quest.experience,
@@ -50,12 +52,18 @@ export const addQuest = async (quest, team) => {
 
 export const getAllQuests = async team => {
   const quests = []
-  const questQuery = await db.collection('teams').doc(team).collection('quests').get()
+  const questQuery = await teamsRef.doc(team).collection('quests').get()
   if(questQuery) questQuery.forEach(quest => quests.push(quest.data()))
   return quests
 }
 
 export const getQuest = async (quest, team) => {
-  const questResult = await db.collection('teams').doc(team).collection('quests').doc(quest).get()
+  const questResult = await teamsRef.doc(team).collection('quests').doc(quest).get()
   return questResult.data()
+}
+
+export const updateProfile = async (team, profile) => {
+  const profileRef = teamsRef.doc(team.name).collection('members').doc(team.user.id)
+  const updatedProfile = await profileRef.update(profile)
+  return updatedProfile
 }
