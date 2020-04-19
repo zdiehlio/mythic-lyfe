@@ -16,6 +16,8 @@ export const app = firebase.initializeApp(firebaseConfig)
 
 const db = firebase.firestore()
 
+const storage = firebase.storage().ref()
+
 const teamsRef = db.collection('teams')
 
 export const addTeam = async team => {
@@ -66,4 +68,11 @@ export const updateProfile = async (team, profile) => {
   const profileRef = teamsRef.doc(team.name).collection('members').doc(team.user.id)
   const updatedProfile = await profileRef.update(profile)
   return updatedProfile
+}
+
+export const updateAvatar = async (team, file) => {
+  const newAvatar = await storage.child(`avatars/${team.user.id}`).put(file)
+  const imgLocation = await newAvatar.ref.getDownloadURL()
+  const userRef = teamsRef.doc(team.name).collection('members').doc(team.user.id)
+  await userRef.update({ avatar: imgLocation })
 }

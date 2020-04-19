@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 
 import SignOut from '../../authentication/SignOut'
 
-import { updateProfile } from '../../db/firebase'
+import { updateProfile, updateAvatar } from '../../db/firebase'
 
 import './index.css'
 
@@ -30,6 +30,8 @@ const Console = ({ currentTeam }) => {
       {currentTeam.name}
       {userProfileState.displayName}
       <SignOut />
+      <img className='avatar' src={currentTeam.user.avatar}/>
+      <input type='file' onChange={event => updateAvatar(currentTeam, event.target.files[0])}/>
       {!editProfileState ?
         <button onClick={() => setEditProfileState(true)}>
           EditProfile
