@@ -5,14 +5,7 @@ import './index.css'
 import InterfaceHome from './InterfaceHome';
 import Quest from './Quest';
 
-const Interface = ({ questList, updateQuestList, currentTeam }) => {
-
-  const [ currentQuest, setCurrentQuest ] = useState({ name: '', description: '', experience: '', reward: ''})
-
-  const handleQuest = quest => {
-    setCurrentQuest(quest)
-  }
-
+const Interface = ({ questList, updateQuestList, currentTeam, handleQuest, currentQuest }) => {
 
   return(
     <div className='interface'>

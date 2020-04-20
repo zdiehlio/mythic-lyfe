@@ -13,6 +13,8 @@ const Dashboard = ({ currentUser }) => {
 
   const [ currentTeamState, setCurrentTeamState ] = useState({ name: '', user: {} })
   const [ questListState, setQuestListState] = useState([])
+  const [ currentQuestState, setCurrentQuestState ] = useState({ name: '', description: '', experience: '', reward: ''})
+
   const params = useParams()
 
   useEffect(() => {
@@ -35,11 +37,15 @@ const Dashboard = ({ currentUser }) => {
     setQuestListState(questListState.concat(quest))
   }
 
+  const handleQuest = quest => {
+    setCurrentQuestState(quest)
+  }
+
   return(
     <div className='dashboard'>
       <Console currentTeam={currentTeamState} />
-      <Interface currentTeam={currentTeamState} questList={questListState} updateQuestList={updateQuestList} />
-      <Chat />
+      <Interface currentTeam={currentTeamState} questList={questListState} updateQuestList={updateQuestList} currentQuest={currentQuestState} handleQuest={handleQuest} />
+      <Chat currentQuest={currentQuestState} />
     </div>
   )
 }
