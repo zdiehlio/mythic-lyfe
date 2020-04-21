@@ -61,7 +61,7 @@ export const getAllQuests = async team => {
 
 export const getQuest = async (quest, team) => {
   const questResult = await teamsRef.doc(team).collection('quests').doc(quest).get()
-  return questResult.data()
+  return { id: questResult.id, ...questResult.data() }
 }
 
 export const updateProfile = async (team, profile) => {
@@ -75,4 +75,10 @@ export const updateAvatar = async (team, file) => {
   const imgLocation = await newAvatar.ref.getDownloadURL()
   const userRef = teamsRef.doc(team.name).collection('members').doc(team.user.id)
   await userRef.update({ avatar: imgLocation })
+}
+
+export const addMessage = async (team, quest, message, user) => {
+  const questRef = teamsRef.doc(team.name).collection('quests').doc(quest.id).collection('messages')
+  const newMessage = await questRef.add({ message, user, time: firebase.firestore.FieldValue.serverTimestamp()})
+  return newMessage.data()
 }
