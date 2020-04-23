@@ -45,7 +45,7 @@ const Dashboard = ({ currentUser }) => {
     <div className='dashboard'>
       <Console currentTeam={currentTeamState} />
       <Interface currentTeam={currentTeamState} questList={questListState} updateQuestList={updateQuestList} currentQuest={currentQuestState} handleQuest={handleQuest} />
-      <Chat currentQuest={currentQuestState} />
+      <Chat currentQuest={currentQuestState} currentTeam={currentTeamState} />
     </div>
   )
 }

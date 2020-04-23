@@ -15,6 +15,7 @@ const firebaseConfig = {
 export const app = firebase.initializeApp(firebaseConfig)
 
 const db = firebase.firestore()
+const fieldValue = firebase.firestore.FieldValue
 
 const storage = firebase.storage().ref()
 
@@ -55,7 +56,7 @@ export const addQuest = async (quest, team) => {
 export const getAllQuests = async team => {
   const quests = []
   const questQuery = await teamsRef.doc(team).collection('quests').get()
-  if(questQuery) questQuery.forEach(quest => quests.push(quest.data()))
+  if(questQuery) questQuery.forEach(quest => quests.push({ id: quest.id, ...quest.data() }))
   return quests
 }
 
@@ -78,7 +79,7 @@ export const updateAvatar = async (team, file) => {
 }
 
 export const addMessage = async (team, quest, message, user) => {
-  const questRef = teamsRef.doc(team.name).collection('quests').doc(quest.id).collection('messages')
-  const newMessage = await questRef.add({ message, user, time: firebase.firestore.FieldValue.serverTimestamp()})
-  return newMessage.data()
+  const questRef = teamsRef.doc(team.name).collection('quests').doc(quest.id)
+  const newMessage = await questRef.update({ messages: fieldValue.arrayUnion({ message, user, time: Date.now()})})
+  return newMessage
 }
