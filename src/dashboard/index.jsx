@@ -5,7 +5,7 @@ import Console from './console';
 import Interface from './interface';
 import Chat from './chat';
 
-import { getTeam, getAllQuests } from '../db/firebase'
+import { getTeam, getAllQuests, acceptQuest } from '../db/firebase'
 
 import './index.css'
 
@@ -13,7 +13,8 @@ const Dashboard = ({ currentUser }) => {
 
   const [ currentTeamState, setCurrentTeamState ] = useState({ name: '', user: {} })
   const [ questListState, setQuestListState] = useState([])
-  const [ currentQuestState, setCurrentQuestState ] = useState({ name: '', description: '', experience: '', reward: ''})
+  const [ userQuestsState, setUsersQuestState ] = useState([])
+  const [ currentQuestState, setCurrentQuestState ] = useState()
 
   const params = useParams()
 
@@ -22,29 +23,35 @@ const Dashboard = ({ currentUser }) => {
       if(currentUser) {
         const team = await getTeam(params.team, currentUser.email)
         setCurrentTeamState(team)
-
+        const [ quests, userQuests ] = await getAllQuests(team)
+        setQuestListState(quests)
+        setUsersQuestState(userQuests)
       }
     }
-    const questResults = async () => {
-      const quests = await getAllQuests(params.team)
-      setQuestListState(quests)
-    }
     teamResults()
-    questResults()
   }, [currentUser])
 
   const updateQuestList = quest => {
     setQuestListState(questListState.concat(quest))
   }
 
-  const handleQuest = quest => {
+  const toggleQuest = quest => {
     setCurrentQuestState(quest)
+  }
+
+  const handleQuest = quest => {
+    acceptQuest(quest, currentTeamState)
+    const filteredQuests = questListState.filter(questState => questState.name !== quest.name)
+    setQuestListState(filteredQuests)
+    toggleQuest(undefined)
+    const updatedUserQuests = userQuestsState.concat(quest)
+    setUsersQuestState(updatedUserQuests)
   }
 
   return(
     <div className='dashboard'>
-      <Console currentTeam={currentTeamState} />
-      <Interface currentTeam={currentTeamState} questList={questListState} updateQuestList={updateQuestList} currentQuest={currentQuestState} handleQuest={handleQuest} />
+      <Console currentTeam={currentTeamState} userQuests={userQuestsState} />
+      <Interface  handleQuest={handleQuest} currentTeam={currentTeamState} questList={questListState} updateQuestList={updateQuestList} currentQuest={currentQuestState} toggleQuest={toggleQuest} />
       <Chat currentQuest={currentQuestState} currentTeam={currentTeamState} />
     </div>
   )

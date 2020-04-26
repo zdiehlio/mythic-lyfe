@@ -4,6 +4,7 @@ import SignIn from '../authentication/Signin'
 import Teams from './Teams';
 
 const MainMenu = ({ currentUser }) => {
+
   return (
     <div>
       {currentUser ?

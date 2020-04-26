@@ -1,21 +1,17 @@
-import React, { useState } from 'react'
-import { Router } from '@reach/router'
+import React from 'react'
 
 import './index.css'
 import InterfaceHome from './InterfaceHome';
 import Quest from './Quest';
 
-const Interface = ({ questList, updateQuestList, currentTeam, handleQuest, currentQuest }) => {
+const Interface = ({ handleQuest, questList, updateQuestList, currentTeam, toggleQuest, currentQuest }) => {
 
   return(
     <div className='interface'>
-      {/* <InterfaceHome handleQuest={handleQuest} questList={questList} updateQuestList={updateQuestList} currentTeam={currentTeam} />
-      <Quest currentQuest={currentQuest} /> */}
-      
-      <Router>
-      <InterfaceHome path='/' handleQuest={handleQuest} questList={questList} updateQuestList={updateQuestList} currentTeam={currentTeam} />
-      <Quest path=':quest' currentQuest={currentQuest} />
-      </Router>
+      {currentQuest ? 
+        <Quest  handleQuest={handleQuest} currentQuest={currentQuest} toggleQuest={toggleQuest} /> :
+        <InterfaceHome toggleQuest={toggleQuest} questList={questList} updateQuestList={updateQuestList} currentTeam={currentTeam} />
+      }
     </div>
   )
 }

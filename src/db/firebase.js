@@ -48,16 +48,32 @@ export const addQuest = async (quest, team) => {
     name: quest.name,
     description: quest.description,
     experience: quest.experience,
-    reward: quest.reward
+    reward: quest.reward,
+    questGiver: team.user.id,
+    hero: null
   })
   return newQuest
 }
 
+export const acceptQuest = async (quest, team) => {
+  return await teamsRef.doc(team.name).collection('quests').doc(quest.id).update({
+    hero: team.user.id
+  })
+}
+
 export const getAllQuests = async team => {
   const quests = []
-  const questQuery = await teamsRef.doc(team).collection('quests').get()
-  if(questQuery) questQuery.forEach(quest => quests.push({ id: quest.id, ...quest.data() }))
-  return quests
+  const userQuests = []
+  const questQuery = await teamsRef.doc(team.name).collection('quests').get()
+  if(questQuery) questQuery.forEach(quest => {
+    const questBody = quest.data()
+    if(!questBody.hero) {
+      quests.push({ id: quest.id, ...questBody })
+    } else if(questBody.hero === team.user.id) {
+      userQuests.push({ id: quest.id, ...questBody})
+    }
+  })
+  return [ quests, userQuests]
 }
 
 export const getQuest = async (quest, team) => {
@@ -80,6 +96,11 @@ export const updateAvatar = async (team, file) => {
 
 export const addMessage = async (team, quest, message, user) => {
   const questRef = teamsRef.doc(team.name).collection('quests').doc(quest.id)
-  const newMessage = await questRef.update({ messages: fieldValue.arrayUnion({ message, user, time: Date.now()})})
-  return newMessage
+  try {
+    const time = Date.now()
+    await questRef.update({ messages: fieldValue.arrayUnion({ message, user, time })})
+    return { success: true, time }
+  } catch(error) {
+    return { success: false, error}
+  }
 }

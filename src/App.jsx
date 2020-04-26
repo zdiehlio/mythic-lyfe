@@ -4,6 +4,9 @@ import firebase from 'firebase'
 
 // Components
 import Dashboard from './dashboard'
+import Interface from './dashboard/interface'
+import Quest from './dashboard/interface/Quest'
+import InterfaceHome from './dashboard/interface/InterfaceHome'
 
 // Modules
 import { app } from './db/firebase'
@@ -27,11 +30,10 @@ function App() {
     checkAuth()
   }, [])
 
-
   return (
     <Router className="app">
       <MainMenu currentUser={currentUser} path='/' />
-      <Dashboard currentUser={currentUser} path='/dashboard/:team/*' />
+      <Dashboard currentUser={currentUser} path='/dashboard/:team' />
     </Router>
   );
 }

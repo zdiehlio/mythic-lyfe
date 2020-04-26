@@ -3,7 +3,7 @@ import { Link } from '@reach/router'
 
 import { addQuest } from '../../db/firebase';
 
-const InterfaceHome = ({ currentTeam, updateQuestList, questList, handleQuest}) => {
+const InterfaceHome = ({ currentTeam, updateQuestList, questList, toggleQuest}) => {
 
   const [ questNameState, setQuestNameState ] = useState('')
   const [ questDescriptionState, setQuestDescriptionState ] = useState('')
@@ -28,7 +28,7 @@ const InterfaceHome = ({ currentTeam, updateQuestList, questList, handleQuest}) 
       {questList.map(quest => {
         return (
           <div key={quest.name}>
-            <Link onClick={() => handleQuest(quest)} to={`${quest.name}`}>{quest.name}</Link>
+            <div onClick={() => toggleQuest(quest)} >{quest.name}</div>
           </div>
         )
       })}

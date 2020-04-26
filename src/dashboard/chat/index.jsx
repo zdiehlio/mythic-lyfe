@@ -10,20 +10,22 @@ const Chat = ({ currentQuest, currentTeam }) => {
   const [ messageListState, setMessageListState ] = useState([])
 
   useEffect(() => {
-    setMessageListState(currentQuest.messages)
-  }, [currentQuest.messages])
+    if(currentQuest) {
+      setMessageListState(currentQuest.messages)
+    } else {
+      setMessageListState([])
+    }
+  }, [currentQuest])
 
   const handleMessage = async event => {
     event.preventDefault()
     const newMessage = await addMessage(currentTeam, currentQuest, messageState, currentTeam.user.displayName)
-    if(newMessage) {
-      console.log(newMessage)
-      setMessageListState([ messageListState, ...messageState ])
+    if(newMessage.success) {
+      const updatedMessages = messageListState.concat({ message: messageState, user: currentTeam.user.displayName, time: 233 })
+      setMessageListState(updatedMessages)
       setMessageState('')
     }
   }
-
-  console.log(messageListState)
 
   return(
     <div className='chat'>
