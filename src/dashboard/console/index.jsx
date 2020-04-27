@@ -6,7 +6,7 @@ import { updateProfile, updateAvatar } from '../../db/firebase'
 
 import './index.css'
 
-const Console = ({ currentTeam, userQuests }) => {
+const Console = ({ currentTeam, userQuests, toggleQuest }) => {
 
   const [ userProfileState, setUserProfileState ] = useState({ displayName: '', id: '' })
   const [ editProfileState, setEditProfileState ] = useState(false)
@@ -44,7 +44,7 @@ const Console = ({ currentTeam, userQuests }) => {
       }
       {userQuests.map(quest => {
         return (
-          <div key={quest.id}>{quest.name}</div>
+          <div onClick={() => toggleQuest(quest)} key={quest.id}>{quest.name}</div>
         )
       })}
 

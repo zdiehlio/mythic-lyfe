@@ -1,6 +1,6 @@
 import React from 'react'
 
-const Quest = ({ handleQuest, currentQuest, toggleQuest }) => {
+const Quest = ({ handleQuest, currentQuest, toggleQuest, completeQuest }) => {
   return (
     <>
       <button onClick={() => toggleQuest(undefined)}>X</button>
@@ -8,7 +8,10 @@ const Quest = ({ handleQuest, currentQuest, toggleQuest }) => {
       <p>{currentQuest.description}</p>
       <p>{currentQuest.experience}</p>
       <p>{currentQuest.reward}</p>
-      <button onClick={() => handleQuest(currentQuest)} >Accept Quest</button>
+      {currentQuest.hero ?
+        <button onClick={() => completeQuest(currentQuest)} >Complete Quest</button> :
+        <button onClick={() => handleQuest(currentQuest)} >Accept Quest</button>
+      }
     </>
   )
 }

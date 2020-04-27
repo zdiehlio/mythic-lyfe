@@ -61,6 +61,11 @@ export const acceptQuest = async (quest, team) => {
   })
 }
 
+export const finishQuest = async (quest, team) => {
+  await teamsRef.doc(team.name).collection('quests').doc(quest.id).delete()
+  return await teamsRef.doc(team.name).collection('completeQuests').add(quest)
+}
+
 export const getAllQuests = async team => {
   const quests = []
   const userQuests = []
