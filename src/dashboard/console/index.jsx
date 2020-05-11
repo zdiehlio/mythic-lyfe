@@ -11,13 +11,31 @@ const Console = ({ currentTeam, userQuests, toggleQuest }) => {
   const [ userProfileState, setUserProfileState ] = useState({ displayName: '', id: '' })
   const [ editProfileState, setEditProfileState ] = useState(false)
   const [ displayNameState, setDisplayNameState ] = useState('')
+  const [ activeQuestsState, setActiveQuestState ] = useState([])
+  const [ pendingQuestsState, setPendingQuestsState ] = useState([])
+  const [ completedQuestsState, setCompletedQuestsState ] = useState([])
 
   useEffect(() => {
     setUserProfileState(currentTeam.user)
-  }, [currentTeam.user])
+    const active = []
+    const pending = []
+    const completed = []
+    userQuests.map(quest => {
+      if(quest.status === 'active') {
+        active.push(quest)
+      } else if(quest.status === 'pending') {
+        pending.push(quest)
+      } else if(quest.status === 'completed') {
+        completed.push(quest)
+      }
+    })
+    setActiveQuestState(active)
+    setPendingQuestsState(pending)
+    setCompletedQuestsState(completed)
+  }, [currentTeam.user, userQuests])
 
   const handleSubmit = async event => {
-    event.preventDefault()
+    event.preventDefault()  
     const updatedProfile = { displayName: displayNameState }
     await updateProfile(currentTeam, updatedProfile)
     setEditProfileState(false)
@@ -42,9 +60,22 @@ const Console = ({ currentTeam, userQuests, toggleQuest }) => {
           <button type='submit'>Save</button>
         </form>
       }
-      {userQuests.map(quest => {
+      <h4>Active Quests</h4>
+      {activeQuestsState.map((quest, index) => {
         return (
-          <div onClick={() => toggleQuest(quest)} key={quest.id}>{quest.name}</div>
+          <div onClick={() => toggleQuest({ index, ...quest })} key={quest.id}>{quest.name}</div>
+        )
+      })}
+      <h4>Pending Quests</h4>
+      {pendingQuestsState.map((quest, index) => {
+        return (
+          <div onClick={() => toggleQuest({ index, ...quest })} key={quest.id}>{quest.name}</div>
+        )
+      })}
+      <h4>Completed Quests</h4>
+      {completedQuestsState.map((quest, index) => {
+        return (
+          <div onClick={() => toggleQuest({ index, ...quest })} key={quest.id}>{quest.name}</div>
         )
       })}
 
