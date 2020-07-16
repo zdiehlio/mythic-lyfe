@@ -9,12 +9,11 @@ const SignIn = () => {
 
   const handleSignIn = () => {
     const actionCodSettings = {
-      url: 'http://localhost:3000/',
+      url: 'http://localhost:3000/dashboard',
       handleCodeInApp: true
     }
     signInWithLink(emailState, actionCodSettings)
     setEmailSentState(true)
-    console.log('handleSignIn', emailState)
   }
   return (
     <div>
