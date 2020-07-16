@@ -21,6 +21,12 @@ const storage = firebase.storage().ref()
 
 export const teamsRef = db.collection('teams')
 
+export const getUser = async id => {
+	const userRef = db.collection('users').doc(id)
+	const user = await userRef.get()
+	return user.data()
+}
+
 export const addTeam = async team => {
 	const teamRef = teamsRef.doc(team.name)
 	const newTeam = await teamRef.set({
@@ -38,8 +44,9 @@ export const addTeam = async team => {
 export const getAllTeams = async user => {
 	const teams = []
 	const teamQuery = await db
-		.collectionGroup('members')
-		.where('id', '==', `${user}`)
+		.collection('teams')
+		// .where('members')
+		.where('name', 'in', user.teams)
 		.get()
 	if (teamQuery) teamQuery.forEach(team => teams.push(team.data()))
 	return teams
