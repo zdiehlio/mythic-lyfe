@@ -1,0 +1,15 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-mythiclyfe-dev-153433-authRole",
+      "UnauthRoleArn": "arn:aws:iam::449930480669:role/amplify-mythiclyfe-dev-153433-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::449930480669:role/amplify-mythiclyfe-dev-153433-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-mythiclyfe-dev-153433-deployment",
+      "UnauthRoleName": "amplify-mythiclyfe-dev-153433-unauthRole",
+      "StackName": "amplify-mythiclyfe-dev-153433",
+      "StackId": "arn:aws:cloudformation:us-east-1:449930480669:stack/amplify-mythiclyfe-dev-153433/f9bd3ed0-bacb-11ed-9811-1245564922eb",
+      "AmplifyAppId": "d1zu63i4wcwlyu"
+    }
+  }
+}

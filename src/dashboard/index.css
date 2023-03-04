@@ -1,9 +1,0 @@
-.dashboard {
-  display: grid;
-  width: 100%;
-  height: 100vh;
-  grid-template-areas:
-    'interface interface chat'
-    'interface interface chat'
-    'console console console';
-}
